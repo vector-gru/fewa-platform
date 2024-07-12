@@ -8,14 +8,12 @@ import (
 
 var DB *gorm.DB
 
-func InitDB() {
-    // Default credentials for MySQL in XAMPP
+func InitDB() *gorm.DB {
     dsn := "root:@tcp(127.0.0.1:3306)/tutor_booking_system?charset=utf8mb4&parseTime=True&loc=Local"
-    var err error
-    DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
+    db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
     if err != nil {
         log.Fatal("Failed to connect to database:", err)
     }
-
-    log.Println("Database connection established")
+    DB = db // Assign the connection to the global variable
+    return db
 }

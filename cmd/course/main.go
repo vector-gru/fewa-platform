@@ -11,19 +11,19 @@ import (
     "time"
 
     "github.com/lesi/tutor_booking_system/pkg/database"
+    "github.com/lesi/tutor_booking_system/models"
     "github.com/lesi/tutor_booking_system/pkg/logging"
     "github.com/lesi/tutor_booking_system/services/course"
-    "github.com/lesi/tutor_booking_system/models"
 )
 
 func main() {
     logger := logging.NewLogger()
-    database.InitDB()  // Initialize the database connection
+    db := database.InitDB()
     database.DB.AutoMigrate(&models.User{})
     database.DB.AutoMigrate(&models.Course{})
 
-
-    courseService := course.NewService()
+    // Initialize course service with the logger and database
+    courseService := course.NewService(db, logger)
 
     http.HandleFunc("/courses", func(w http.ResponseWriter, r *http.Request) {
         if r.Method == http.MethodGet {
@@ -39,12 +39,12 @@ func main() {
         }
     })
 
-    // Serve course.html at /courses.html
+    // Serve course.html at /course.html
     http.HandleFunc("/course.html", func(w http.ResponseWriter, r *http.Request) {
         http.ServeFile(w, r, "../../static/course.html")
     })
 
-    // Serve the static HTML files
+    // Serve static files
     fs := http.FileServer(http.Dir("../../static"))
     http.Handle("/", http.StripPrefix("/", fs))
 
