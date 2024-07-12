@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Service</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+    </style>
+    <script>
+        async function fetchUsers() {
+            try {
+                const response = await fetch('/users');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                const users = await response.json();
+                const table = document.getElementById('userTable');
+                users.forEach(user => {
+                    const row = table.insertRow();
+                    row.insertCell(0).innerText = user.id;
+                    row.insertCell(1).innerText = user.name;
+                    row.insertCell(2).innerText = user.email;
+                });
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+            }
+        }
+    </script>
+</head>
+<body onload="fetchUsers()">
+    <h1>User Service</h1>
+    <table id="userTable">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+        </tr>
+    </table>
+</body>
+</html>

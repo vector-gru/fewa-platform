@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Course Service</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+    </style>
+    <script>
+        async function fetchCourses() {
+            try {
+                const response = await fetch('/courses');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                const courses = await response.json();
+                const table = document.getElementById('courseTable');
+                courses.forEach(course => {
+                    const row = table.insertRow();
+                    row.insertCell(0).innerText = course.id;
+                    row.insertCell(1).innerText = course.name;
+                    row.insertCell(2).innerText = course.description;
+                });
+            } catch (error) {
+                console.error('Error fetching course data:', error);
+            }
+        }
+    </script>
+</head>
+<body onload="fetchCourses()">
+    <h1>Course Service</h1>
+    <table id="courseTable">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+    </table>
+</body>
+</html>
