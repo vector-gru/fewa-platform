@@ -10,41 +10,43 @@ import (
     "syscall"
     "time"
 
+    "github.com/lesi/tutor_booking_system/pkg/database"
     "github.com/lesi/tutor_booking_system/pkg/logging"
     "github.com/lesi/tutor_booking_system/services/course"
+    "github.com/lesi/tutor_booking_system/models"
 )
 
 func main() {
     logger := logging.NewLogger()
+    database.InitDB()  // Initialize the database connection
+    database.DB.AutoMigrate(&models.User{})
+    database.DB.AutoMigrate(&models.Course{})
+
 
     courseService := course.NewService()
 
     http.HandleFunc("/courses", func(w http.ResponseWriter, r *http.Request) {
-        log.Println("Received request on /courses")
         if r.Method == http.MethodGet {
             courses, err := courseService.GetAllCourses(context.Background())
             if err != nil {
-                log.Println("Error retrieving courses:", err)
                 http.Error(w, err.Error(), http.StatusInternalServerError)
                 return
             }
-            log.Println("Returning courses:", courses)
             w.Header().Set("Content-Type", "application/json")
             json.NewEncoder(w).Encode(courses)
         } else {
-            log.Println("Method not allowed")
             http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
         }
     })
 
-    // Serve course.html at root URL
-    http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-        log.Println("Serving course.html")
+    // Serve course.html at /courses.html
+    http.HandleFunc("/course.html", func(w http.ResponseWriter, r *http.Request) {
         http.ServeFile(w, r, "../../static/course.html")
     })
 
+    // Serve the static HTML files
     fs := http.FileServer(http.Dir("../../static"))
-    http.Handle("/static/", http.StripPrefix("/static/", fs))
+    http.Handle("/", http.StripPrefix("/", fs))
 
     srv := &http.Server{
         Addr:         ":8081",

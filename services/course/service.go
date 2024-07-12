@@ -2,36 +2,22 @@ package course
 
 import (
     "context"
-    "sync"
+    "github.com/lesi/tutor_booking_system/pkg/database"
+    "github.com/lesi/tutor_booking_system/models"
 )
 
-type Course struct {
-    ID          int    `json:"id"`
-    Name        string `json:"name"`
-    Description string `json:"description"`
-}
-
 type Service interface {
-    GetAllCourses(ctx context.Context) ([]Course, error)
+    GetAllCourses(ctx context.Context) ([]models.Course, error)
 }
 
-type courseService struct {
-    courses []Course
-    mu      sync.RWMutex
-}
+type courseService struct{}
 
 func NewService() Service {
-    return &courseService{
-        courses: []Course{
-            {ID: 1, Name: "Go Programming", Description: "Learn the Go programming language."},
-            {ID: 2, Name: "Microservices", Description: "Learn about microservices architecture."},
-            {ID: 3, Name: "Kubernetes", Description: "Learn Kubernetes programming and Helm charts."},
-        },
-    }
+    return &courseService{}
 }
 
-func (s *courseService) GetAllCourses(ctx context.Context) ([]Course, error) {
-    s.mu.RLock()
-    defer s.mu.RUnlock()
-    return s.courses, nil
+func (s *courseService) GetAllCourses(ctx context.Context) ([]models.Course, error) {
+    var courses []models.Course
+    result := database.DB.Find(&courses)
+    return courses, result.Error
 }

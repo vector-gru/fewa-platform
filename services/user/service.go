@@ -2,35 +2,22 @@ package user
 
 import (
     "context"
-    "sync"
+    "github.com/lesi/tutor_booking_system/pkg/database"
+    "github.com/lesi/tutor_booking_system/models"
 )
 
-type User struct {
-    ID    int    `json:"id"`
-    Name  string `json:"name"`
-    Email string `json:"email"`
-}
-
 type Service interface {
-    GetAllUsers(ctx context.Context) ([]User, error)
+    GetAllUsers(ctx context.Context) ([]models.User, error)
 }
 
-type userService struct {
-    users []User
-    mu    sync.RWMutex
-}
+type userService struct{}
 
 func NewService() Service {
-    return &userService{
-        users: []User{
-            {ID: 1, Name: "John Doe", Email: "john.doe@example.com"},
-            {ID: 2, Name: "Jane Smith", Email: "jane.smith@example.com"},
-        },
-    }
+    return &userService{}
 }
 
-func (s *userService) GetAllUsers(ctx context.Context) ([]User, error) {
-    s.mu.RLock()
-    defer s.mu.RUnlock()
-    return s.users, nil
+func (s *userService) GetAllUsers(ctx context.Context) ([]models.User, error) {
+    var users []models.User
+    result := database.DB.Find(&users)
+    return users, result.Error
 }

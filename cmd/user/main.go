@@ -10,40 +10,41 @@ import (
     "syscall"
     "time"
 
+    "github.com/lesi/tutor_booking_system/pkg/database"
     "github.com/lesi/tutor_booking_system/pkg/logging"
     "github.com/lesi/tutor_booking_system/services/user"
+    "github.com/lesi/tutor_booking_system/models" // Ensure this import is correct
 )
 
 func main() {
     logger := logging.NewLogger()
 
+    // Initialize the database connection
+    database.InitDB()
+
+    // Perform database migrations
+    database.DB.AutoMigrate(&models.User{})
+    database.DB.AutoMigrate(&models.Course{})
+
     userService := user.NewService()
 
     http.HandleFunc("/users", func(w http.ResponseWriter, r *http.Request) {
-        log.Println("Received request on /users")
         if r.Method == http.MethodGet {
             users, err := userService.GetAllUsers(context.Background())
             if err != nil {
-                log.Println("Error retrieving users:", err)
                 http.Error(w, err.Error(), http.StatusInternalServerError)
                 return
             }
-            log.Println("Returning users:", users)
             w.Header().Set("Content-Type", "application/json")
             json.NewEncoder(w).Encode(users)
         } else {
-            log.Println("Method not allowed")
             http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
         }
     })
 
-    // Serve index.html for the user service
-    http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-        http.ServeFile(w, r, "../../static/index.html")
-    })
-
+    // Serve the static HTML files
     fs := http.FileServer(http.Dir("../../static"))
-    http.Handle("/static/", http.StripPrefix("/static/", fs))
+    http.Handle("/", http.StripPrefix("/", fs))
 
     srv := &http.Server{
         Addr:         ":8080",
