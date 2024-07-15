@@ -1,29 +1,31 @@
 package logging
 
 import (
-	"log"
+    "log"
+    "os"
 )
 
-// Logger is a simple logging interface
-type Logger interface {
-	Error(args ...interface{})
-	Info(args ...interface{})
+type Logger struct {
+    logger *log.Logger
 }
 
-// SimpleLogger is a basic implementation of the Logger interface
-type SimpleLogger struct{}
-
-// NewLogger creates a new SimpleLogger
-func NewLogger() Logger {
-	return &SimpleLogger{}
+func NewLogger() *Logger {
+    return &Logger{
+        logger: log.New(os.Stdout, "LOG: ", log.Ldate|log.Ltime|log.Lshortfile),
+    }
 }
 
-// Error logs an error message
-func (l *SimpleLogger) Error(args ...interface{}) {
-	log.Println("ERROR:", args)
+func (l *Logger) Error(v ...interface{}) {
+    l.logger.SetPrefix("ERROR: ")
+    l.logger.Println(v...)
 }
 
-// Info logs an info message
-func (l *SimpleLogger) Info(args ...interface{}) {
-	log.Println("INFO:", args)
+func (l *Logger) Info(v ...interface{}) {
+    l.logger.SetPrefix("INFO: ")
+    l.logger.Println(v...)
+}
+
+func (l *Logger) Warn(v ...interface{}) {
+    l.logger.SetPrefix("WARN: ")
+    l.logger.Println(v...)
 }

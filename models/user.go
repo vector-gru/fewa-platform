@@ -1,9 +1,26 @@
 package models
 
-import "gorm.io/gorm"
+import "time"
 
 type User struct {
-    gorm.Model
-    Name  string `json:"name"`
-    Email string `json:"email"`
+    ID                   uint      `gorm:"primaryKey;autoIncrement"`
+    FirstName            string    `json:"first_name"`
+    LastName             string    `json:"last_name"`
+    Email                string    `json:"email" gorm:"uniqueIndex"`
+    Password             string    `json:"password"`
+    PhoneNumber          string    `json:"phone_number"`
+    DateOfBirth          time.Time `json:"date_of_birth"`
+    Gender               string    `json:"gender"`
+    ProfilePicture       string    `json:"profile_picture"`
+    StreetAddress        string    `json:"street_address"`
+    City                 string    `json:"city"`
+    State                string    `json:"state"`
+    PostalCode           string    `json:"postal_code"`
+    Country              string    `json:"country"`
+    PreferredLanguage    string    `json:"preferred_language"`
+    TimeZone             string    `json:"time_zone"`
+    AgreeToTerms         bool      `json:"agree_to_terms"`
+    SubscribeToNewsletter bool     `json:"subscribe_to_newsletter"`
+    CreatedAt            time.Time `json:"created_at"`
+    UpdatedAt            time.Time `json:"updated_at"`
 }

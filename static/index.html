@@ -27,7 +27,7 @@
                 users.forEach(user => {
                     const row = table.insertRow();
                     row.insertCell(0).innerText = user.ID;
-                    row.insertCell(1).innerText = user.name;
+                    row.insertCell(1).innerText = user.first_name + " " + user.last_name;;
                     row.insertCell(2).innerText = user.email;
                 });
             } catch (error) {

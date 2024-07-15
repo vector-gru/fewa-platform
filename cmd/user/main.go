@@ -2,7 +2,6 @@ package main
 
 import (
     "context"
-    "encoding/json"
     "log"
     "net/http"
     "os"
@@ -10,44 +9,31 @@ import (
     "syscall"
     "time"
 
+    "github.com/gorilla/mux"
+    "github.com/joho/godotenv"
+    "github.com/lesi/tutor_booking_system/models"
     "github.com/lesi/tutor_booking_system/pkg/database"
     "github.com/lesi/tutor_booking_system/pkg/logging"
-    "github.com/lesi/tutor_booking_system/services/user"
-    "github.com/lesi/tutor_booking_system/models" // Ensure this import is correct
+    "github.com/lesi/tutor_booking_system/handlers"
 )
 
 func main() {
+    // Load the .env file
+    err := godotenv.Load("../../.env")
+    if err != nil {
+        log.Fatal("Error loading .env file")
+    }
+
     logger := logging.NewLogger()
-
-    // Initialize the database connection
     database.InitDB()
-
-    // Perform database migrations
     database.DB.AutoMigrate(&models.User{})
-    database.DB.AutoMigrate(&models.Course{})
 
-    userService := user.NewService()
-
-    http.HandleFunc("/users", func(w http.ResponseWriter, r *http.Request) {
-        if r.Method == http.MethodGet {
-            users, err := userService.GetAllUsers(context.Background())
-            if err != nil {
-                http.Error(w, err.Error(), http.StatusInternalServerError)
-                return
-            }
-            w.Header().Set("Content-Type", "application/json")
-            json.NewEncoder(w).Encode(users)
-        } else {
-            http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-        }
-    })
-
-    // Serve the static HTML files
-    fs := http.FileServer(http.Dir("../../static"))
-    http.Handle("/", http.StripPrefix("/", fs))
+    r := mux.NewRouter()
+    handlers.RegisterUserHandlers(r)
 
     srv := &http.Server{
         Addr:         ":8080",
+        Handler:      r,
         WriteTimeout: 15 * time.Second,
         ReadTimeout:  15 * time.Second,
     }
