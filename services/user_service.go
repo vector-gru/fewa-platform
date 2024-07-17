@@ -1,10 +1,12 @@
+// services/user_service.go
+
 package services
 
 import (
     "context"
     "github.com/lesi/tutor_booking_system/models"
-    "golang.org/x/crypto/bcrypt"
     "gorm.io/gorm"
+    "golang.org/x/crypto/bcrypt"
 )
 
 type UserService struct {
@@ -32,6 +34,14 @@ func (s *UserService) GetUserByID(ctx context.Context, id uint) (*models.User, e
 
 func (s *UserService) CreateUser(ctx context.Context, user *models.User) error {
     return s.db.WithContext(ctx).Create(user).Error
+}
+
+func (s *UserService) UpdateUser(ctx context.Context, user *models.User) error {
+    return s.db.WithContext(ctx).Save(user).Error
+}
+
+func (s *UserService) DeleteUser(ctx context.Context, id uint) error {
+    return s.db.WithContext(ctx).Delete(&models.User{}, id).Error
 }
 
 func HashPassword(password string) (string, error) {
