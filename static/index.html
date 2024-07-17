@@ -1,75 +1,67 @@
 <!DOCTYPE html>
+<!-- Coding By CodingNepal - codingnepalweb.com -->
 <html lang="en" dir="ltr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration Form</title>
-    <link rel="stylesheet" href="signup.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registration Form</title> 
+  <link rel="stylesheet" href="signup.css">
 </head>
 <body>
-<div class="wrapper">
+  <div class="wrapper">
     <h2>Registration</h2>
-    <form id="registrationForm">
-        <div class="input-box">
-            <input type="text" name="first_name" placeholder="Enter your First Name" required>
-        </div>
-        <div class="input-box">
-            <input type="text" name="last_name" placeholder="Enter your Last Name" required>
-        </div>
-        <div class="input-box">
-            <input type="email" name="email" placeholder="Enter your email" required>
-        </div>
-        <div class="input-box">
-            <input type="password" name="password" placeholder="Create password" required>
-        </div>
-        <div class="input-box">
-            <input type="password" name="confirm_password" placeholder="Confirm password" required>
-        </div>
-        <div class="policy">
-            <input type="checkbox" name="agree_to_terms" required>
-            <h3>I accept all terms & conditions</h3>
-        </div>
-        <div class="input-box button">
-            <input type="submit" value="Register Now">
-        </div>
-        <div class="text">
-            <h3>Already have an account? <a href="#">Login now</a></h3>
-        </div>
+    <form id="registrationForm" action="#" method="POST">
+      <div class="input-box">
+        <input type="text" name="first_name" id="first_name" placeholder="Enter your First Name" autocomplete="given-name" required>
+      </div>
+      <div class="input-box">
+        <input type="text" name="last_name" id="last_name" placeholder="Enter your Last Name" autocomplete="family-name" required>
+      </div>
+      <div class="input-box">
+        <input type="email" name="email" id="email" placeholder="Enter your email" autocomplete="email" required>
+      </div>
+      <div class="input-box">
+        <input type="password" name="password" id="password" placeholder="Create password" autocomplete="new-password" required>
+      </div>
+      <div class="policy">
+        <input type="checkbox" name="agree_to_terms" id="agreeToTerms">
+        <label for="agreeToTerms">I accept all terms & condition</label>
+      </div>
+      <div class="input-box button">
+        <input type="submit" value="Register Now">
+      </div>
+      <div class="text">
+        <h3>Already have an account? <a href="#">Login now</a></h3>
+      </div>
     </form>
-</div>
-
-<script>
-    const form = document.getElementById('registrationForm');
-    form.addEventListener('submit', async function(event) {
+    <script>
+      const form = document.getElementById('registrationForm');
+      form.addEventListener('submit', async function(event) {
         event.preventDefault();
-        
+
         const formData = new FormData(form);
         const jsonData = {};
-        formData.forEach((value, key) => {
-            jsonData[key] = value;
+        formData.forEach((value, key) => { jsonData[key] = value });
+
+        console.log('Form Data:', jsonData); // Log form data to console
+
+        const response = await fetch('/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(jsonData)
         });
 
-        try {
-            const response = await fetch('/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(jsonData)
-            });
-
-            if (response.ok) {
-                alert('User registered successfully!');
-                form.reset();
-            } else {
-                const errorData = await response.json();
-                alert(`Failed to register user: ${errorData.message}`);
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('An error occurred while registering the user.');
+        if (response.ok) {
+          const user = await response.json(); // Parse JSON response
+          alert('User registered successfully!');
+          form.reset();
+        } else {
+          alert('Failed to register user');
         }
-    });
-</script>
+      });
+    </script>
+  </div>
 </body>
 </html>
