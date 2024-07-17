@@ -4,7 +4,7 @@ import (
     "encoding/json"
     "log"
     "net/http"
-    "strconv" // For string to boolean conversion
+    "strconv"
 
     "github.com/lesi/tutor_booking_system/models"
     "github.com/lesi/tutor_booking_system/services"
@@ -33,7 +33,7 @@ func (h *UserHandler) RegisterUser(w http.ResponseWriter, r *http.Request) {
     defer r.Body.Close()
 
     // Convert agree_to_terms string to boolean
-    agreeToTerms := r.FormValue("agree_to_terms") == "on"
+    agreeToTerms := user.AgreeToTerms == "true" // Assumes "true" or "false" string values
     user.AgreeToTerms = strconv.FormatBool(agreeToTerms)
 
     // Validate required fields
@@ -66,3 +66,6 @@ func (h *UserHandler) RegisterUser(w http.ResponseWriter, r *http.Request) {
     // Log successful registration
     log.Printf("User registered successfully: %v", user)
 }
+
+
+

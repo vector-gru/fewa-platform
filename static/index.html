@@ -35,32 +35,38 @@
       </div>
     </form>
     <script>
-      const form = document.getElementById('registrationForm');
-      form.addEventListener('submit', async function(event) {
-        event.preventDefault();
+    const form = document.getElementById('registrationForm');
+    form.addEventListener('submit', async function(event) {
+    event.preventDefault();
 
-        const formData = new FormData(form);
-        const jsonData = {};
-        formData.forEach((value, key) => { jsonData[key] = value });
-
-        console.log('Form Data:', jsonData); // Log form data to console
-
-        const response = await fetch('/register', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(jsonData)
-        });
-
-        if (response.ok) {
-          const user = await response.json(); // Parse JSON response
-          alert('User registered successfully!');
-          form.reset();
+    const formData = new FormData(form);
+    const jsonData = {};
+    formData.forEach((value, key) => { 
+        if (key === 'agree_to_terms') {
+            jsonData[key] = form.elements[key].checked; // Ensure it's sent as a boolean
         } else {
-          alert('Failed to register user');
+            jsonData[key] = value;
         }
-      });
+    });
+
+    const response = await fetch('/register', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(jsonData)
+    });
+
+    if (response.ok) {
+        const user = await response.json(); // Parse JSON response
+        alert('User registered successfully!');
+        form.reset();
+    } else {
+        alert('Failed to register user');
+    }
+});
+
+
     </script>
   </div>
 </body>
