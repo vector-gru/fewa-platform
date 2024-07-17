@@ -20,7 +20,7 @@ type User struct {
     PreferredLanguage    string    `json:"preferred_language"`
     TimeZone             string    `json:"time_zone"`
     AgreeToTerms         bool      `json:"agree_to_terms"`
-    SubscribeToNewsletter bool     `json:"subscribe_to_newsletter"`
+    SubscribeToNewsletter bool      `json:"subscribe_to_newsletter"`
     CreatedAt            time.Time `json:"created_at"`
     UpdatedAt            time.Time `json:"updated_at"`
 }

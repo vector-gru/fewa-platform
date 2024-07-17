@@ -1,49 +1,75 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" dir="ltr">
 <head>
-    <title>User Service</title>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        table, th, td {
-            border: 1px solid black;
-        }
-        th, td {
-            padding: 10px;
-            text-align: left;
-        }
-    </style>
-    <script>
-        async function fetchUsers() {
-            try {
-                const response = await fetch('/users');
-                if (!response.ok) {
-                    throw new Error('Network response was not ok ' + response.statusText);
-                }
-                const users = await response.json();
-                const table = document.getElementById('userTable');
-                users.forEach(user => {
-                    const row = table.insertRow();
-                    row.insertCell(0).innerText = user.ID;
-                    row.insertCell(1).innerText = user.first_name + " " + user.last_name;;
-                    row.insertCell(2).innerText = user.email;
-                });
-            } catch (error) {
-                console.error('Error fetching user data:', error);
-            }
-        }
-    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <link rel="stylesheet" href="signup.css">
 </head>
-<body onload="fetchUsers()">
-    <h1>User Service</h1>
-    <table id="userTable">
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Email</th>
-        </tr>
-    </table>
+<body>
+<div class="wrapper">
+    <h2>Registration</h2>
+    <form id="registrationForm">
+        <div class="input-box">
+            <input type="text" name="first_name" placeholder="Enter your First Name" required>
+        </div>
+        <div class="input-box">
+            <input type="text" name="last_name" placeholder="Enter your Last Name" required>
+        </div>
+        <div class="input-box">
+            <input type="email" name="email" placeholder="Enter your email" required>
+        </div>
+        <div class="input-box">
+            <input type="password" name="password" placeholder="Create password" required>
+        </div>
+        <div class="input-box">
+            <input type="password" name="confirm_password" placeholder="Confirm password" required>
+        </div>
+        <div class="policy">
+            <input type="checkbox" name="agree_to_terms" required>
+            <h3>I accept all terms & conditions</h3>
+        </div>
+        <div class="input-box button">
+            <input type="submit" value="Register Now">
+        </div>
+        <div class="text">
+            <h3>Already have an account? <a href="#">Login now</a></h3>
+        </div>
+    </form>
+</div>
+
+<script>
+    const form = document.getElementById('registrationForm');
+    form.addEventListener('submit', async function(event) {
+        event.preventDefault();
+        
+        const formData = new FormData(form);
+        const jsonData = {};
+        formData.forEach((value, key) => {
+            jsonData[key] = value;
+        });
+
+        try {
+            const response = await fetch('/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(jsonData)
+            });
+
+            if (response.ok) {
+                alert('User registered successfully!');
+                form.reset();
+            } else {
+                const errorData = await response.json();
+                alert(`Failed to register user: ${errorData.message}`);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred while registering the user.');
+        }
+    });
+</script>
 </body>
 </html>

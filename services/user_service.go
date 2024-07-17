@@ -2,26 +2,39 @@ package services
 
 import (
     "context"
+
     "github.com/lesi/tutor_booking_system/models"
     "golang.org/x/crypto/bcrypt"
     "gorm.io/gorm"
 )
 
-type UserService struct {
+// UserService interface defines the methods that a user service should implement.
+type UserService interface {
+    GetAllUsers(ctx context.Context) ([]models.User, error)
+    CreateUser(ctx context.Context, user *models.User) error
+}
+
+type userService struct {
     db *gorm.DB
 }
 
-func NewUserService(db *gorm.DB) *UserService {
-    return &UserService{db: db}
+// NewUserService returns a new instance of UserService.
+func NewUserService(db *gorm.DB) UserService {
+    return &userService{db: db}
 }
 
-func (s *UserService) GetAllUsers(ctx context.Context) ([]models.User, error) {
+func (s *userService) GetAllUsers(ctx context.Context) ([]models.User, error) {
     var users []models.User
     err := s.db.WithContext(ctx).Find(&users).Error
     return users, err
 }
 
-func (s *UserService) CreateUser(ctx context.Context, user *models.User) error {
+func (s *userService) CreateUser(ctx context.Context, user *models.User) error {
+    hashedPassword, err := HashPassword(user.Password)
+    if err != nil {
+        return err
+    }
+    user.Password = hashedPassword
     return s.db.WithContext(ctx).Create(user).Error
 }
 

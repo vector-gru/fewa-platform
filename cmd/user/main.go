@@ -9,38 +9,48 @@ import (
     "syscall"
     "time"
 
-    "github.com/gorilla/mux"
-    "github.com/joho/godotenv"
+    "github.com/lesi/tutor_booking_system/handlers"
     "github.com/lesi/tutor_booking_system/models"
     "github.com/lesi/tutor_booking_system/pkg/database"
-    "github.com/lesi/tutor_booking_system/pkg/logging"
-    "github.com/lesi/tutor_booking_system/handlers"
+    "github.com/lesi/tutor_booking_system/services"
 )
 
 func main() {
-    // Load the .env file
-    err := godotenv.Load("../../.env")
+    // Initialize database
+    db, err := database.InitDB()
     if err != nil {
-        log.Fatal("Error loading .env file")
+        log.Fatalf("Failed to initialize database: %v", err)
     }
 
-    logger := logging.NewLogger()
-    database.InitDB()
-    database.DB.AutoMigrate(&models.User{})
+    // Auto migrate User model
+    err = db.AutoMigrate(&models.User{})
+    if err != nil {
+        log.Fatalf("Failed to migrate database: %v", err)
+    }
 
-    r := mux.NewRouter()
-    handlers.RegisterUserHandlers(r)
+    userService := services.NewUserService(db)
+    userHandler := handlers.NewUserHandler(userService)
+
+    http.HandleFunc("/register", userHandler.RegisterUser)
+
+    // Serve index.html at /index.html
+    http.HandleFunc("/index.html", func(w http.ResponseWriter, r *http.Request) {
+        http.ServeFile(w, r, "../../static/index.html")
+    })
+
+    // Serve static files
+    fs := http.FileServer(http.Dir("../../static"))
+    http.Handle("/", http.StripPrefix("/", fs))
 
     srv := &http.Server{
         Addr:         ":8080",
-        Handler:      r,
         WriteTimeout: 15 * time.Second,
         ReadTimeout:  15 * time.Second,
     }
 
     go func() {
         if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-            logger.Error("ListenAndServe():", err)
+            log.Printf("ListenAndServe(): %v", err)
         }
     }()
 
@@ -53,7 +63,7 @@ func main() {
     ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
     defer cancel()
     if err := srv.Shutdown(ctx); err != nil {
-        logger.Error("Server Shutdown Failed:", err)
+        log.Printf("Server Shutdown Failed: %v", err)
     }
     log.Println("User service stopped")
 }
