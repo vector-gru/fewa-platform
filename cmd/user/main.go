@@ -1,69 +1,25 @@
 package main
 
 import (
-    "context"
     "log"
     "net/http"
-    "os"
-    "os/signal"
-    "syscall"
-    "time"
 
-    "github.com/lesi/tutor_booking_system/handlers"
-    "github.com/lesi/tutor_booking_system/models"
+    "github.com/gorilla/mux"
     "github.com/lesi/tutor_booking_system/pkg/database"
+    "github.com/lesi/tutor_booking_system/handlers"
     "github.com/lesi/tutor_booking_system/services"
 )
 
 func main() {
-    // Initialize database
-    db, err := database.InitDB()
-    if err != nil {
-        log.Fatalf("Failed to initialize database: %v", err)
-    }
-
-    // Auto migrate User model
-    err = db.AutoMigrate(&models.User{})
-    if err != nil {
-        log.Fatalf("Failed to migrate database: %v", err)
-    }
-
-    userService := services.NewUserService(db)
+    database.InitDB()
+    userService := services.NewUserService(database.DB)
     userHandler := handlers.NewUserHandler(userService)
 
-    http.HandleFunc("/register", userHandler.RegisterUser)
-
-    // Serve index.html at /index.html
-    http.HandleFunc("/index.html", func(w http.ResponseWriter, r *http.Request) {
-        http.ServeFile(w, r, "../../static/index.html")
-    })
-
-    // Serve static files
-    fs := http.FileServer(http.Dir("../../static"))
-    http.Handle("/", http.StripPrefix("/", fs))
-
-    srv := &http.Server{
-        Addr:         ":8080",
-        WriteTimeout: 15 * time.Second,
-        ReadTimeout:  15 * time.Second,
-    }
-
-    go func() {
-        if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-            log.Printf("ListenAndServe(): %v", err)
-        }
-    }()
+    r := mux.NewRouter()
+    r.HandleFunc("/register", userHandler.RegisterUser).Methods("POST")
+    r.HandleFunc("/users", userHandler.GetAllUsers).Methods("GET")
+    r.HandleFunc("/users/{id}", userHandler.GetUserByID).Methods("GET")
 
     log.Println("Starting user service on port 8080...")
-
-    stop := make(chan os.Signal, 1)
-    signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
-    <-stop
-
-    ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-    defer cancel()
-    if err := srv.Shutdown(ctx); err != nil {
-        log.Printf("Server Shutdown Failed: %v", err)
-    }
-    log.Println("User service stopped")
+    log.Fatal(http.ListenAndServe(":8080", r))
 }

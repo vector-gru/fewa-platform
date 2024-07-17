@@ -2,39 +2,35 @@ package services
 
 import (
     "context"
-
     "github.com/lesi/tutor_booking_system/models"
     "golang.org/x/crypto/bcrypt"
     "gorm.io/gorm"
 )
 
-// UserService interface defines the methods that a user service should implement.
-type UserService interface {
-    GetAllUsers(ctx context.Context) ([]models.User, error)
-    CreateUser(ctx context.Context, user *models.User) error
-}
-
-type userService struct {
+type UserService struct {
     db *gorm.DB
 }
 
-// NewUserService returns a new instance of UserService.
-func NewUserService(db *gorm.DB) UserService {
-    return &userService{db: db}
+func NewUserService(db *gorm.DB) *UserService {
+    return &UserService{db: db}
 }
 
-func (s *userService) GetAllUsers(ctx context.Context) ([]models.User, error) {
+func (s *UserService) GetAllUsers(ctx context.Context) ([]models.User, error) {
     var users []models.User
     err := s.db.WithContext(ctx).Find(&users).Error
     return users, err
 }
 
-func (s *userService) CreateUser(ctx context.Context, user *models.User) error {
-    hashedPassword, err := HashPassword(user.Password)
+func (s *UserService) GetUserByID(ctx context.Context, id uint) (*models.User, error) {
+    var user models.User
+    err := s.db.WithContext(ctx).First(&user, id).Error
     if err != nil {
-        return err
+        return nil, err
     }
-    user.Password = hashedPassword
+    return &user, nil
+}
+
+func (s *UserService) CreateUser(ctx context.Context, user *models.User) error {
     return s.db.WithContext(ctx).Create(user).Error
 }
 
