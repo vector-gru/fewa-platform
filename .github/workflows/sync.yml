@@ -24,15 +24,23 @@ jobs:
           git fetch --all
           branches=$(git branch -r | grep -v '\->' | sed 's/  origin\///' | tr '\n' ' ')
           echo "BRANCHES=$branches" >> $GITHUB_ENV
+          echo "Fetched branches: $branches"
 
       - name: Add secondary remote
         run: git remote add secondary https://github.com/fewaitconsulting/fewaitconsulting-platform.git
 
+      - name: Debug branch checkout
+        run: |
+          for branch in ${{ env.BRANCHES }}; do
+            echo "Processing branch: $branch"
+            git checkout $branch || echo "Failed to checkout branch: $branch"
+          done
+
       - name: Push branches to secondary
         run: |
           for branch in ${{ env.BRANCHES }}; do
-            git checkout $branch
-            git push secondary $branch
+            echo "Pushing branch: $branch to secondary"
+            git push secondary $branch || echo "Failed to push branch: $branch"
           done
         env:
           GITHUB_TOKEN: ${{ secrets.REPO_SYNC_TOKEN }}
