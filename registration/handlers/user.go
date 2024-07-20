@@ -9,8 +9,8 @@ import (
     "strconv"
 
     "github.com/gorilla/mux"
-    "github.com/lesi/tutor_booking_system/models"
-    "github.com/lesi/tutor_booking_system/services"
+    "github.com/lesi/tutor_booking_system/registration/models"
+    "github.com/lesi/tutor_booking_system/registration/services"
 )
 
 type UserHandler struct {
@@ -28,7 +28,7 @@ func (h *UserHandler) RegisterUser(w http.ResponseWriter, r *http.Request) {
     decoder := json.NewDecoder(r.Body)
     if err := decoder.Decode(&user); err != nil {
         http.Error(w, "Invalid request payload", http.StatusBadRequest)
-        log.Printf("Error decoding JSON: %v", err)
+       log.Printf("Error decoding JSON: %v", err)
         return
     }
     defer r.Body.Close()

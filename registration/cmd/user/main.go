@@ -7,9 +7,9 @@ import (
     "net/http"
 
     "github.com/gorilla/mux"
-    "github.com/lesi/tutor_booking_system/pkg/database"
-    "github.com/lesi/tutor_booking_system/handlers"
-    "github.com/lesi/tutor_booking_system/services"
+    "github.com/lesi/tutor_booking_system/registration/pkg/database"
+    "github.com/lesi/tutor_booking_system/registration/handlers"
+    "github.com/lesi/tutor_booking_system/registration/services"
 )
 
 func main() {

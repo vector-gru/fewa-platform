@@ -4,7 +4,7 @@ package services
 
 import (
     "context"
-    "github.com/lesi/tutor_booking_system/models"
+    "github.com/lesi/tutor_booking_system/registration/models"
     "gorm.io/gorm"
     "golang.org/x/crypto/bcrypt"
 )

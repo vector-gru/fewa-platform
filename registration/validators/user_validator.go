@@ -3,7 +3,7 @@ package validators
 import (
     "errors"
     "regexp"
-    "github.com/lesi/tutor_booking_system/models"
+    "github.com/lesi/tutor_booking_system/registration/models"
 )
 
 func ValidateUser(user models.User) error {
@@ -55,9 +55,9 @@ func ValidateUser(user models.User) error {
     if user.TimeZone == "" {
         return errors.New("time zone is required")
     }
-    if !user.AgreeToTerms {
-        return errors.New("you must agree to the terms")
-    }
+    // if !user.AgreeToTerms {
+    //     return errors.New("you must agree to the terms")
+    // }
     return nil
 }
 
