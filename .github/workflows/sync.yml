@@ -1,0 +1,37 @@
+name: Sync Repositories
+
+on:
+  push:
+    branches:
+      - '**'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Get all branches
+        id: get_branches
+        run: |
+          git fetch --all
+          echo "::set-output name=branches::$(git branch -r | grep -v '\->' | sed 's/  origin\///' | tr '\n' ' ')"
+
+      - name: Add secondary remote
+        run: git remote add secondary https://github.com/fewaitconsulting/fewaitconsulting-platform.git
+
+      - name: Push branches to secondary
+        run: |
+          for branch in ${{ steps.get_branches.outputs.branches }}; do
+            git checkout $branch
+            git push secondary $branch
+          done
+        env:
+          GITHUB_TOKEN: ${{ secrets.REPO_SYNC_TOKEN }}
