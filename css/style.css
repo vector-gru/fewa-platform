@@ -60,6 +60,16 @@
             background-color: rgba(255, 0, 0, 1);
         }
 /* ***************************************************** */
+
+/* added by me */
+.transparent-text {
+	color: transparent;
+	/* visibility: hidden; */
+	opacity: 0;
+  }
+/* ends here */
+
+
 a:focus,
 button:focus {
 	outline: none !important;
