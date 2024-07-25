@@ -57,7 +57,7 @@
             text-decoration: none;
         }
         .join-button:hover {
-            background-color: rgba(255, 0, 0, 1);
+            background-color: rgb(255, 136, 0);
         }
 
 		#projects {
@@ -71,7 +71,16 @@
 			padding: 20px;
 		  }
 
+		  /* .cover-image-wrapper {
+			background-image: url('images/new/cover-image.svg');
+			background-size: cover;
+			background-position: center;
+			height: 100vh; /* or any other height value you prefer */
+		  } */
 		  
+		  /* .parallax-container {
+			background-image: none; /* remove the background image from the parallax container */
+		  } */
 /* ***************************************************** */
 
 /* added by me */
@@ -20889,6 +20898,7 @@ body:not(.lg-from-hash) .lg-outer.lg-start-zoom .lg-item.lg-complete .lg-object 
 .parallax-container {
 	position: relative;
 	overflow: hidden;
+	background-image: none;
 }
 
 .material-parallax {
