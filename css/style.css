@@ -59,6 +59,19 @@
         .join-button:hover {
             background-color: rgba(255, 0, 0, 1);
         }
+
+		#projects {
+			background-image: url('/images/new/loginRegPhoto.jpg');
+			background-size: cover;
+			background-position: center;
+		  }
+
+		  .bg-light {
+			background-color: rgba(255, 255, 255, 0.7);
+			padding: 20px;
+		  }
+
+		  
 /* ***************************************************** */
 
 /* added by me */
