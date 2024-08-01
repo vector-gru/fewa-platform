@@ -11,76 +11,85 @@
 /* *************************************************** */
 /* by me */
 
-<style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            width: 100%;
-            overflow: hidden;
-            font-family: Arial, Helvetica, sans-serif;
-        }
-        #particles-js {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-        }
-        .content {
-            position: relative;
-            z-index: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-            text-align: center;
-            color: white;
-        }
-        .content h1 {
-            font-size: 4em;
-            margin: 0;
-			color: white;
-        }
-        .content p {
-            font-size: 2em;
-            margin: 10px 0;
-        }
-        .join-button {
-            padding: 10px 20px;
-            font-size: 1.2em;
-            color: white;
-            background-color: rgba(166, 255, 0, 0.7);
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-        }
-        .join-button:hover {
-            background-color: rgb(255, 136, 0);
-        }
+<style>body,
+html {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+	font-family: Arial, Helvetica, sans-serif;
+}
 
-		#projects {
-			background-image: url('/images/new/loginRegPhoto.jpg');
-			background-size: cover;
-			background-position: center;
-		  }
+#particles-js {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	z-index: 0;
+}
 
-		  .bg-light {
-			background-color: rgba(255, 255, 255, 0.7);
-			padding: 20px;
-		  }
+.content {
+	position: relative;
+	z-index: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	text-align: center;
+	color: white;
+}
 
-		  /* .cover-image-wrapper {
+.content h1 {
+	font-size: 4em;
+	margin: 0;
+	color: white;
+}
+
+.content p {
+	font-size: 2em;
+	margin: 10px 0;
+}
+
+.join-button {
+	padding: 10px 20px;
+	font-size: 1.2em;
+	color: white;
+	background-color: rgba(166, 255, 0, 0.7);
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	text-decoration: none;
+}
+
+.join-button:hover {
+	background-color: rgb(255, 136, 0);
+}
+
+#projects {
+	background-image: url('/images/new/loginRegPhoto.jpg');
+	background-size: cover;
+	background-position: center;
+}
+
+.bg-light {
+	background-color: rgba(255, 255, 255, 0.7);
+	padding: 20px;
+}
+
+/* .cover-image-wrapper {
 			background-image: url('images/new/cover-image.svg');
 			background-size: cover;
 			background-position: center;
 			height: 100vh; /* or any other height value you prefer */
-		  } */
-		  
-		  /* .parallax-container {
+}
+
+*/
+/* .parallax-container {
 			background-image: none; /* remove the background image from the parallax container */
-		  } */
+}
+
+*/
 /* ***************************************************** */
 
 /* added by me */
@@ -88,7 +97,8 @@
 	color: transparent;
 	/* visibility: hidden; */
 	opacity: 0;
-  }
+}
+
 /* ends here */
 
 
@@ -15619,8 +15629,8 @@ html.rd-navbar-fixed-linked .page-header {
 
 @media (min-width: 1400px) {
 	.rd-navbar-classic.rd-navbar-static .rd-navbar-brand img {
-		max-width: 230px;
-		max-height: 230px;
+		max-width: 110px;
+		max-height: 110px;
 	}
 }
 
@@ -21483,10 +21493,10 @@ disabled look for disabled choices in the results dropdown
 	position: relative;
 	z-index: 2;
   } */
-  
-  
-  
-  
+
+
+
+
 
 @media (min-width: 576px) {
 	#particles-js {
