@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <title>Register & Login</title>
+    <link rel="stylesheet" href="/static/RegStyle.css"> <!-- Ensure path is correct -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="container">
+        <input type="checkbox" id="flip">
+        <div class="cover">
+            <div class="front">
+                <img src="/static/images/new/loginRegPhoto.jpg" alt=""> <!-- Ensure path is correct -->
+                <div class="text">
+                    <span class="text-1">Every new knowledge <br> is an advantage</span>
+                    <span class="text-2">Let's get connected!</span>
+                </div>
+            </div>
+            <div class="back">
+                <div class="text">
+                    <span class="text-1">Complete miles of journey <br> with one step</span>
+                    <span class="text-2">Let's get started!</span>
+                </div>
+            </div>
+        </div>
+        <div class="forms">
+            <div class="form-content">
+                
+                <div class="signup-form">
+                    <div class="title">Register</div>
+                    <form id="registerForm">
+                        <div class="input-boxes">
+                            <div class="input-box">
+                                <i class="fas fa-user"></i>
+                                <input type="text" id="firstName" placeholder="Enter first name" required>
+                            </div>
+                            <div class="input-box">
+                                <i class="fas fa-user"></i>
+                                <input type="text" id="lastName" placeholder="Enter last name" required>
+                            </div>
+                            <div class="input-box">
+                                <i class="fas fa-envelope"></i>
+                                <input type="text" id="registerEmail" placeholder="Enter your email" required>
+                            </div>
+                            <div class="input-box">
+                                <i class="fas fa-lock"></i>
+                                <input type="password" id="registerPassword" placeholder="Enter your password" required>
+                            </div>
+                            <div class="input-box">
+                                <i class="fas fa-lock"></i>
+                                <input type="password" id="confirmPassword" placeholder="Confirm password" required>
+                            </div>
+                            <div class="button input-box">
+                                <input type="submit" value="Submit">
+                            </div>
+                            <div class="text sign-up-text">Already have an account? <label for="flip">Login now</label></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="login-form">
+                    <div class="title">Login</div>
+                    <form id="loginForm">
+                        <div class="input-boxes">
+                            <div class="input-box">
+                                <i class="fas fa-envelope"></i>
+                                <input type="text" id="loginEmail" placeholder="Enter your email" required>
+                            </div>
+                            <div class="input-box">
+                                <i class="fas fa-lock"></i>
+                                <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                            </div>
+                            <div class="text"><a href="#">Forgot password?</a></div>
+                            <div class="button input-box">
+                                <input type="submit" value="Submit">
+                            </div>
+                            <div class="text sign-up-text">Don't have an account? <label for="flip">Signup now</label></div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+      document.getElementById("loginForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        const email = document.getElementById("loginEmail").value;
+        const password = document.getElementById("loginPassword").value;
+
+        fetch("http://localhost:8082/login", { // Adjust URL to match backend endpoint
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ email, password })
+        })
+        .then(response => {
+          if (!response.ok) {
+            return response.text().then(text => { throw new Error(text); });
+          }
+          return response.json();
+        })
+        .then(data => {
+          alert("Login successful!");
+          // Handle successful login, e.g., redirect to another page
+        })
+        .catch(error => {
+          alert(error.message);
+        });
+      });
+
+      document.getElementById("registerForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        const firstName = document.getElementById("firstName").value;
+        const lastName = document.getElementById("lastName").value;
+        const email = document.getElementById("registerEmail").value;
+        const password = document.getElementById("registerPassword").value;
+        const confirmPassword = document.getElementById("confirmPassword").value;
+
+        if (password !== confirmPassword) {
+          alert("Passwords do not match");
+          return;
+        }
+
+        fetch("http://localhost:8080/register", { // Adjust URL to match backend endpoint
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ first_name: firstName, last_name: lastName, email, password })
+        })
+        .then(response => {
+          if (!response.ok) {
+            return response.text().then(text => { throw new Error(text); });
+          }
+          return response.json();
+        })
+        .then(data => {
+          alert("Registration successful!");
+          // Switch to login form
+          document.getElementById('flip').checked = true;
+        })
+        .catch(error => {
+          alert(error.message);
+        });
+      });
+    </script>
+</body>
+</html>
