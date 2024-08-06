@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Video Course</title>
+    <link rel="stylesheet" href="upload.css">
+    <script src="upload.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <h2>Upload Video Course</h2>
+        <form action="/upload" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="course-title">Course Title</label>
+                <input type="text" id="course-title" name="courseTitle" required>
+            </div>
+
+            <div class="form-group">
+                <label for="course-description">Course Description</label>
+                <textarea id="course-description" name="courseDescription" rows="4" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="category">Category</label>
+                <select id="category" name="category" required>
+                    <option value="Programming">Programming</option>
+                    <option value="Mathematics">Mathematics</option>
+                    <option value="Science">Science</option>
+                    <option value="Business">Business</option>
+                    <option value="Arts">Arts</option>
+                    <option value="Language">Language</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="subcategory">Subcategory</label>
+                <select id="subcategory" name="subcategory" required>
+                    <option value="Web Development">Web Development</option>
+                    <option value="Data Science">Data Science</option>
+                    <option value="Algebra">Algebra</option>
+                    <option value="Physics">Physics</option>
+                    <option value="Marketing">Marketing</option>
+                    <option value="Painting">Painting</option>
+                    <option value="Spanish">Spanish</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="instructor-name">Instructor Name</label>
+                <select id="instructor-name" name="instructorName" required>
+                    <option value="John Doe">John Doe</option>
+                    <option value="Jane Smith">Jane Smith</option>
+                    <option value="Alice Johnson">Alice Johnson</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="course-language">Course Language</label>
+                <input type="text" id="course-language" name="courseLanguage" required>
+            </div>
+
+            <div class="form-group">
+                <label for="course-level">Course Level</label>
+                <select id="course-level" name="courseLevel" required>
+                    <option value="Beginner">Beginner</option>
+                    <option value="Intermediate">Intermediate</option>
+                    <option value="Advanced">Advanced</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="course-duration">Course Duration (in hours)</label>
+                <input type="number" id="course-duration" name="courseDuration" required>
+            </div>
+
+            <div class="form-group">
+                <label for="course-objectives">Course Objectives</label>
+                <textarea id="course-objectives" name="courseObjectives" rows="4" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="prerequisites">Prerequisites</label>
+                <textarea id="prerequisites" name="prerequisites" rows="4" required></textarea>
+            </div>
+
+            <div id="video-container">
+                <div class="form-group video-group">
+                    <label for="video-upload">Video Upload</label>
+                    <input type="file" id="video-upload" name="videos[]" required>
+
+                    <label for="video-title">Video Title</label>
+                    <input type="text" id="video-title" name="videoTitle[]" required>
+
+                    <label for="video-description">Video Description</label>
+                    <textarea id="video-description" name="videoDescription[]" rows="2" required></textarea>
+
+                    <label for="video-duration">Video Duration (in minutes)</label>
+                    <input type="number" id="video-duration" name="videoDuration[]" required>
+
+                    <label for="thumbnail">Thumbnail Image</label>
+                    <input type="file" id="thumbnail" name="thumbnail[]" required>
+                </div>
+            </div>
+
+            <button type="button" id="add-video-btn">Add Another Video</button>
+
+            <div class="form-group">
+                <label for="tags">Tags/Keywords</label>
+                <input type="text" id="tags" name="tags" required>
+            </div>
+
+            <div class="form-group">
+                <label for="course-price">Course Price</label>
+                <input type="number" id="course-price" name="coursePrice" required>
+            </div>
+
+            <div class="form-group">
+                <label for="discount">Discount (%)</label>
+                <input type="number" id="discount" name="discount">
+            </div>
+
+            <div class="form-group">
+                <label for="access-type">Access Type</label>
+                <select id="access-type" name="accessType" required>
+                    <option value="Free">Free</option>
+                    <option value="Paid">Paid</option>
+                    <option value="Subscription">Subscription</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="additional-resources">Additional Resources</label>
+                <input type="file" id="additional-resources" name="additionalResources[]" multiple>
+            </div>
+
+            <div class="form-group">
+                <label for="publication-date">Publication Date</label>
+                <input type="date" id="publication-date" name="publicationDate" required>
+            </div>
+
+            <div class="form-group">
+                <label for="course-status">Course Status</label>
+                <select id="course-status" name="courseStatus" required>
+                    <option value="Draft">Draft</option>
+                    <option value="Published">Published</option>
+                    <option value="Archived">Archived</option>
+                </select>
+            </div>
+
+            <button type="submit">Upload Course</button>
+        </form>
+    </div>
+</body>
+</html>
