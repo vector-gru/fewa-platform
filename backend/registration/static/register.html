@@ -12,7 +12,7 @@
         <input type="checkbox" id="flip">
         <div class="cover">
             <div class="front">
-                <img src="/static/images/new/loginRegPhoto.jpg" alt=""> <!-- Ensure path is correct -->
+                <img src="/static/loginRegPhoto.jpg" alt=""> <!-- Ensure path is correct -->
                 <div class="text">
                     <span class="text-1">Every new knowledge <br> is an advantage</span>
                     <span class="text-2">Let's get connected!</span>
@@ -50,10 +50,11 @@
                             <div class="input-box">
                                 <i class="fas fa-lock"></i>
                                 <input type="password" id="confirmPassword" placeholder="Confirm password" required>
-                            </div>
-                            <div class="input-box">
-                                <i class="fas fa-user-tag"></i>
-                                <select id="role" name="role" required>
+                            </div>                            
+                            <div class="input-box" style="position: relative; display: flex; align-items: center;">
+                                <i class="fas fa-user-tag" aria-hidden="true" style="position: absolute; left: 10px;"></i>
+                                <label for="role" class="sr-only">Role</label>
+                                <select id="role" name="role" required style="padding-left: 30px; width: 100%;">
                                     <option value="" disabled selected>Select role</option>
                                     <option value="student">Student</option>
                                     <option value="tutor">Tutor</option>
