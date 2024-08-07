@@ -33,23 +33,32 @@
                         <div class="input-boxes">
                             <div class="input-box">
                                 <i class="fas fa-user"></i>
-                                <input type="text" id="firstName" placeholder="Enter first name" required>
+                                <input type="text" id="firstName" name="first_name" placeholder="Enter first name" required>
                             </div>
                             <div class="input-box">
                                 <i class="fas fa-user"></i>
-                                <input type="text" id="lastName" placeholder="Enter last name" required>
+                                <input type="text" id="lastName" name="last_name" placeholder="Enter last name" required>
                             </div>
                             <div class="input-box">
                                 <i class="fas fa-envelope"></i>
-                                <input type="text" id="registerEmail" placeholder="Enter your email" required>
+                                <input type="email" id="registerEmail" name="email" placeholder="Enter your email" required>
                             </div>
                             <div class="input-box">
                                 <i class="fas fa-lock"></i>
-                                <input type="password" id="registerPassword" placeholder="Enter your password" required>
+                                <input type="password" id="registerPassword" name="password" placeholder="Enter your password" required>
                             </div>
                             <div class="input-box">
                                 <i class="fas fa-lock"></i>
                                 <input type="password" id="confirmPassword" placeholder="Confirm password" required>
+                            </div>
+                            <div class="input-box">
+                                <i class="fas fa-user-tag"></i>
+                                <select id="role" name="role" required>
+                                    <option value="" disabled selected>Select role</option>
+                                    <option value="student">Student</option>
+                                    <option value="tutor">Tutor</option>
+                                    <option value="admin">Admin</option>
+                                </select>
                             </div>
                             <div class="button input-box">
                                 <input type="submit" value="Submit">
@@ -64,11 +73,11 @@
                         <div class="input-boxes">
                             <div class="input-box">
                                 <i class="fas fa-envelope"></i>
-                                <input type="text" id="loginEmail" placeholder="Enter your email" required>
+                                <input type="email" id="loginEmail" name="email" placeholder="Enter your email" required>
                             </div>
                             <div class="input-box">
                                 <i class="fas fa-lock"></i>
-                                <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                                <input type="password" id="loginPassword" name="password" placeholder="Enter your password" required>
                             </div>
                             <div class="text"><a href="#">Forgot password?</a></div>
                             <div class="button input-box">
@@ -81,69 +90,91 @@
             </div>
         </div>
     </div>
-    <script>
-      document.getElementById("loginForm").addEventListener("submit", function(event) {
-        event.preventDefault();
-        const email = document.getElementById("loginEmail").value;
-        const password = document.getElementById("loginPassword").value;
+<script>
+document.getElementById("registerForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+    
+    const firstName = document.getElementById("firstName").value;
+    const lastName = document.getElementById("lastName").value;
+    const email = document.getElementById("registerEmail").value;
+    const password = document.getElementById("registerPassword").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
+    const role = document.getElementById("role").value;
 
-        fetch("http://localhost:8082/login", { // Adjust URL to match backend endpoint
-          method: "POST",
-          headers: {
+    if (password !== confirmPassword) {
+        alert("Passwords do not match");
+        return;
+    }
+
+    const data = {
+        first_name: firstName,
+        last_name: lastName,
+        email: email,
+        password: password,
+        role: role
+    };
+
+    console.log("Registering user with data:", data); // Log the data to verify
+
+    fetch("http://localhost:8080/register", { // Adjust URL to match backend endpoint
+        method: "POST",
+        headers: {
             "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ email, password })
-        })
-        .then(response => {
-          if (!response.ok) {
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => {
+        if (!response.ok) {
             return response.text().then(text => { throw new Error(text); });
-          }
-          return response.json();
-        })
-        .then(data => {
-          alert("Login successful!");
-          // Handle successful login, e.g., redirect to another page
-        })
-        .catch(error => {
-          alert(error.message);
-        });
-      });
-
-      document.getElementById("registerForm").addEventListener("submit", function(event) {
-        event.preventDefault();
-        const firstName = document.getElementById("firstName").value;
-        const lastName = document.getElementById("lastName").value;
-        const email = document.getElementById("registerEmail").value;
-        const password = document.getElementById("registerPassword").value;
-        const confirmPassword = document.getElementById("confirmPassword").value;
-
-        if (password !== confirmPassword) {
-          alert("Passwords do not match");
-          return;
         }
+        return response.json();
+    })
+    .then(data => {
+        alert("Registration successful!");
+        // Switch to login form
+        document.getElementById('flip').checked = true;
+    })
+    .catch(error => {
+        alert("Registration failed: " + error.message);
+    });
+});
 
-        fetch("http://localhost:8080/register", { // Adjust URL to match backend endpoint
-          method: "POST",
-          headers: {
+document.getElementById("loginForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+    
+    const email = document.getElementById("loginEmail").value;
+    const password = document.getElementById("loginPassword").value;
+
+    const data = {
+        email: email,
+        password: password
+    };
+
+    console.log("Logging in with data:", data); // Log the data to verify
+
+    fetch("http://localhost:8080/login", { // Adjust URL to match backend endpoint
+        method: "POST",
+        headers: {
             "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ first_name: firstName, last_name: lastName, email, password })
-        })
-        .then(response => {
-          if (!response.ok) {
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => {
+        if (!response.ok) {
             return response.text().then(text => { throw new Error(text); });
-          }
-          return response.json();
-        })
-        .then(data => {
-          alert("Registration successful!");
-          // Switch to login form
-          document.getElementById('flip').checked = true;
-        })
-        .catch(error => {
-          alert(error.message);
-        });
-      });
-    </script>
+        }
+        return response.json();
+    })
+    .then(data => {
+        alert("Login successful!");
+        // Handle successful login (e.g., redirect to another page or show user info)
+    })
+    .catch(error => {
+        alert("Login failed: " + error.message);
+    });
+});
+</script>
+
+
 </body>
 </html>

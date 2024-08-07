@@ -2,8 +2,8 @@
 <html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
-    <title>Register & Login</title>
-    <link rel="stylesheet" href="/static/RegStyle.css"> <!-- Ensure path is correct -->
+    <title>Login</title>
+    <link rel="stylesheet" href="/static/loginRegStyle.css"> <!-- Ensure path is correct -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -14,7 +14,7 @@
             <div class="front">
                 <img src="/static/images/new/loginRegPhoto.jpg" alt=""> <!-- Ensure path is correct -->
                 <div class="text">
-                    <span class="text-1">Every new knowledge <br> is an advantage</span>
+                    <span class="text-1">SSEvery new knowledge <br> is an advantage</span>
                     <span class="text-2">Let's get connected!</span>
                 </div>
             </div>
@@ -27,6 +27,26 @@
         </div>
         <div class="forms">
             <div class="form-content">
+                <div class="login-form">
+                    <div class="title">Login</div>
+                    <form id="loginForm">
+                        <div class="input-boxes">
+                            <div class="input-box">
+                                <i class="fas fa-envelope"></i>
+                                <input type="text" id="loginEmail" placeholder="Enter your email" required>
+                            </div>
+                            <div class="input-box">
+                                <i class="fas fa-lock"></i>
+                                <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                            </div>
+                            <div class="text"><a href="#">Forgot password?</a></div>
+                            <div class="button input-box">
+                                <input type="submit" value="Submit">
+                            </div>
+                            <div class="text sign-up-text">Don't have an account? <label for="flip">Signup now</label></div>
+                        </div>
+                    </form>
+                </div>
                 <div class="signup-form">
                     <div class="title">Register</div>
                     <form id="registerForm">
@@ -55,26 +75,6 @@
                                 <input type="submit" value="Submit">
                             </div>
                             <div class="text sign-up-text">Already have an account? <label for="flip">Login now</label></div>
-                        </div>
-                    </form>
-                </div>
-                <div class="login-form">
-                    <div class="title">Login</div>
-                    <form id="loginForm">
-                        <div class="input-boxes">
-                            <div class="input-box">
-                                <i class="fas fa-envelope"></i>
-                                <input type="text" id="loginEmail" placeholder="Enter your email" required>
-                            </div>
-                            <div class="input-box">
-                                <i class="fas fa-lock"></i>
-                                <input type="password" id="loginPassword" placeholder="Enter your password" required>
-                            </div>
-                            <div class="text"><a href="#">Forgot password?</a></div>
-                            <div class="button input-box">
-                                <input type="submit" value="Submit">
-                            </div>
-                            <div class="text sign-up-text">Don't have an account? <label for="flip">Signup now</label></div>
                         </div>
                     </form>
                 </div>
@@ -137,8 +137,7 @@
         })
         .then(data => {
           alert("Registration successful!");
-          // Switch to login form
-          document.getElementById('flip').checked = true;
+          // Handle successful registration, e.g., switch to login form
         })
         .catch(error => {
           alert(error.message);

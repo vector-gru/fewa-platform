@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Course</title>
+    <link rel="stylesheet" href="/static/style.css"> <!-- Ensure path is correct -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="container">
+        <div class="form-content">
+            <div class="title">Create Course</div>
+            <form id="createCourseForm">
+                <div class="input-boxes">
+                    <div class="input-box">
+                        <input type="text" id="courseName" placeholder="Course Name" required>
+                    </div>
+                    <div class="input-box">
+                        <input type="text" id="courseDescription" placeholder="Course Description" required>
+                    </div>
+                    <div class="button input-box">
+                        <input type="submit" value="Create Course">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        document.getElementById("createCourseForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const name = document.getElementById("courseName").value;
+            const description = document.getElementById("courseDescription").value;
+
+            fetch("http://localhost:8081/courses", { // Note the port change to 8081
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ name, description })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert("Course created successfully!");
+                // Clear form
+                document.getElementById("createCourseForm").reset();
+            })
+            .catch(error => {
+                alert(error.message);
+            });
+        });
+    </script>
+</body>
+</html>

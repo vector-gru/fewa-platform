@@ -10,7 +10,7 @@ type User struct {
     FirstName            string         `json:"first_name" gorm:"size:50;not null"`
     LastName             string         `json:"last_name" gorm:"size:50;not null"`
     Email                string         `json:"email" gorm:"unique;size:100;not null"`
-    Password             string         `json:"password_hash" gorm:"size:255;not null"`
+    Password             string         `json:"password" gorm:"size:255;not null"` // Changed json tag from "password_hash" to "password"
     PhoneNumber          string         `json:"phone_number" gorm:"size:20"`
     DateOfBirth          time.Time      `json:"date_of_birth"`
     Gender               string         `json:"gender" gorm:"size:10"`
@@ -24,7 +24,7 @@ type User struct {
     TimeZone             string         `json:"time_zone" gorm:"size:50"`
     AgreeToTerms         bool           `json:"agree_to_terms"`
     SubscribeToNewsletter bool          `json:"subscribe_to_newsletter"`
-   // Role                 string         `json:"role" gorm:"size:50;not null;check:role IN ('tutor', 'admin', 'student')"`
+    Role                 string         `json:"role" gorm:"size:50;check:role IN ('tutor', 'admin', 'student')"`
     CreatedAt            time.Time      `json:"created_at" gorm:"default:current_timestamp"`
     UpdatedAt            time.Time      `json:"updated_at" gorm:"default:current_timestamp"`
 }
