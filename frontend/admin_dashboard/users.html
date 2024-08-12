@@ -23,11 +23,16 @@
               <span>Dashboard</span>
             </a>
           </li>
-          <li>
-            <a class="d-flex align-center fs-14 c-black rad-6 p-10" href="courses.html">
-              <i class="fa-solid fa-graduation-cap fa-fw"></i>
-              <span>Courses</span>
+          <li class="collapsible">
+            <a class="d-flex align-center fs-14 c-black rad-6 p-10" href="#">
+                <i class="fa-solid fa-graduation-cap fa-fw"></i>
+                <span>Courses</span>
+                <i class="fa-solid fa-chevron-down ml-auto"></i>
             </a>
+            <ul class="collapse-content">
+                <li><a href="courses.html">View All</a></li>
+                <li><a href="../course_upload/upload.html">Create New</a></li>
+            </ul>
           </li>
           <li>
             <a class="d-flex align-center fs-14 c-black rad-6 p-10" href="profile.html">
@@ -35,29 +40,33 @@
               <span>Profile</span>
             </a>
           </li>
-          <li>
-            <a class="d-flex align-center fs-14 c-black rad-6 p-10" href="settings.html">
-              <i class="fa-solid fa-gear fa-fw"></i>
-              <span>Settings</span>
+          <li class="collapsible">
+            <a class="d-flex align-center fs-14 c-black rad-6 p-10" href="#">
+                <i class="fa-solid fa-gear fa-fw"></i>
+                <span>Settings</span>
+                <i class="fa-solid fa-chevron-down ml-auto"></i>
             </a>
-          </li>
-          <!-- <li>
-            <a class="d-flex align-center fs-14 c-black rad-6 p-10" href="profile.html">
-              <i class="fa-regular fa-user fa-fw"></i>
-              <span>Profile</span>
-            </a>
-          </li> -->
+            <ul class="collapse-content">
+                <li><a href="settings.html">General</a></li>
+                <li><a href="../profile_update/pUpdate.html">Account</a></li>
+            </ul>
+        </li>          
           <li>
             <a class="d-flex align-center fs-14 c-black rad-6 p-10" href="services.html">
               <i class="fa-solid fa-diagram-project fa-fw"></i>
               <span>Services</span>
             </a>
           </li>
-          <li>
-            <a class="active d-flex align-center fs-14 c-black rad-6 p-10" href="users.html">
-              <i class="fa-regular fa-circle-user fa-fw"></i>
-              <span>Users</span>
+          <li class="collapsible">
+            <a class="active d-flex align-center fs-14 c-black rad-6 p-10" href="#">
+                <i class="fa-regular fa-circle-user fa-fw"></i>
+                <span>Users</span>
+                <i class="fa-solid fa-chevron-down ml-auto"></i>
             </a>
+            <ul class="collapse-content">
+                <li><a href="users.html">Manage Users</a></li>
+                <li><a href="#">Add New</a></li>
+            </ul>
           </li>
           <li>
             <a class="d-flex align-center fs-14 c-black rad-6 p-10" href="files.html">
@@ -521,5 +530,7 @@
         </div>
       </div>
     </div>
+    <!-- javascript here!! -->
+    <script src="js/script.js"></script>
   </body>
 </html>

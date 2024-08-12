@@ -177,6 +177,43 @@ ul {
   cursor: pointer;
 }
 
+.collapsible > a {
+  cursor: pointer;
+  position: relative;
+}
+
+.collapse-content {
+  display: none;
+  padding-left: 20px;
+}
+
+.collapse-content li {
+  padding-left: 10px; /* Additional padding for the list items */
+}
+
+.collapse-content a {
+  color: black;
+  text-decoration: none; /* This removes the underline */
+  padding-left: 10px; /* Ensure the text aligns nicely */
+  display: block; /* Ensures the entire link area is clickable */
+}
+
+.collapse-content a:hover {
+  color: #555; /* Optional: change the color on hover */
+}
+
+.collapsible.active > .collapse-content {
+  display: block;
+}
+
+.collapsible > a > .ml-auto {
+  margin-left: auto;
+}
+
+.collapsible.active > a > .ml-auto {
+  transform: rotate(180deg);
+}
+
 /* ends here */
 
 .page h1 {
