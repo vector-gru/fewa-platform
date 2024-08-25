@@ -15623,8 +15623,8 @@ html.rd-navbar-fixed-linked .page-header {
 .rd-navbar-classic.rd-navbar-static .rd-navbar-brand img {
 	width: auto;
 	height: auto;
-	max-width: 180px;
-	max-height: 180px;
+	max-width: 70px;
+	max-height: 70px;
 }
 
 @media (min-width: 1400px) {
